@@ -1,0 +1,65 @@
+# 自定义模块名称
+module:
+  # 用户模块
+  service1: pf-userInfo
+spring:
+  # jackson对响应回去的日期参数进行格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  # 声明spring框架是否允许定义重名的bean对象覆盖原有的bean
+  main:
+    allow-bean-definition-overriding: true
+  # mvc接收参数时对日期进行格式化
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          #表明gateway开启服务注册和发现的功能
+          enabled: true
+          #是将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了），比如以/service-hi/*的请求路径被路由转发到服务名为service-hi的服务上。
+          lowerCaseServiceId: true
+      routes:
+        - id: 用户模块
+          # lb代表从注册中心获取服务(负载均衡)
+          uri: lb://${module.service1}
+          # 数字越小，优先级越高
+          order: 2
+          #断言,路径相匹配的进行路由。注意是Path的P是大写
+          predicates:
+            #            - Path=/userInfo/**,/access/**
+            - Path=/${module.service1}/**
+            # Method 方法谓词，这里是匹配 GET 和 POST 请求
+            - Method=GET,POST,PUT,DELETE
+          # 过滤器，请求在传递过程中可以通过过滤器对其进行一定的修改(转发之前去掉1层路径)
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
+      # httpClient 连接超时控制
+      httpclient:
+        connect-timeout: 6000
+        response-timeout: 10s
+        # 代理方式
+        proxy:
+          type: http
+# knife4j(网关聚合knife4j必须禁用增强模式，否则会无法启动)
+knife4j:
+  # 屏蔽文档接口(默认false,生产环境改为true)
+  production: false
+  enable: false
+  setting:
+    enableDynamicParameter: false
+    enableOpenApi: false# 模块名称 gateway聚合文档的配置用得到
+# logback
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org:
+      springframework:
+        web: debug
+  file:
+    name:
+      path: ./.logs/${spring.profiles.active}

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty name="LOG_HOME" source="logging.file.path" defaultValue="./.logs/default"/>
+    <property name="appName" value="pf-userInfo"/>
+    <springProfile name="dev">
+        <property name="LOG_HOME" value="./.logs/dev"/>
+    </springProfile>
+    <springProfile name="prd">
+        <property name="LOG_HOME" value="./.logs/prd"/>
+    </springProfile>
+    <springProfile name="local">
+        <property name="LOG_HOME" value="./.logs/local"/>
+    </springProfile>
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr"
+                    converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!--输出到控制台-->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志文件输出格式 -->
+        <encoder>
+            <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level] [ %logger{50} : %line ] - %msg%n</pattern>
+            <!-- 此处设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--使用彩色日志配置-->
+        <encoder>
+            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            <!-- 设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 输出到文件 INFO -->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/${appName}/${appName}-info.log</file>
+        <!-- 日志文件输出格式 -->
+        <encoder>
+            <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern> -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level] [ %logger{50} : %line ] - %msg%n</pattern>
+            <!-- 此处设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${LOG_HOME}/${appName}/${appName}-%d{yyyy-MM-dd}-%i-info.log</fileNamePattern>
+            <!-- 日志文件大小 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 日志文件保留天数 -->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <!-- 0.9.19版本之前使用layout -->
+        <!-- <layout class="ch.qos.logback.classic.PatternLayout">-->
+        <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level ] [ %logger{50} : %line ] - %msg%n</pattern>-->
+        <!-- </layout>-->
+        <!-- 此日志文件只记录info级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 输出到文件 WARN -->
+    <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/${appName}/${appName}-warn.log</file>
+        <!-- 日志文件输出格式 -->
+        <encoder>
+            <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern> -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level] [ %logger{50} : %line ] - %msg%n</pattern>
+            <!-- 此处设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${LOG_HOME}/${appName}/${appName}-%d{yyyy-MM-dd}-%i-warn.log</fileNamePattern>
+            <!-- 日志文件大小 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 日志文件保留天数 -->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <!-- 0.9.19版本之前使用layout -->
+        <!-- <layout class="ch.qos.logback.classic.PatternLayout">-->
+        <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level ] [ %logger{50} : %line ] - %msg%n</pattern>-->
+        <!-- </layout>-->
+        <!-- 此日志文件只记录warn级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 输出到文件 ERROR -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/${appName}/${appName}-error.log</file>
+        <!-- 日志文件输出格式 -->
+        <encoder>
+            <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern> -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level] [ %logger{50} : %line ] - %msg%n</pattern>
+            <!-- 此处设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${LOG_HOME}/${appName}/${appName}-%d{yyyy-MM-dd}-%i-error.log</fileNamePattern>
+            <!-- 日志文件大小 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 日志文件保留天数 -->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <!-- 0.9.19版本之前使用layout -->
+        <!-- <layout class="ch.qos.logback.classic.PatternLayout">-->
+        <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level ] [ %logger{50} : %line ] - %msg%n</pattern>-->
+        <!-- </layout>-->
+        <!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 用户信息拦截器日志 -->
+    <appender name="userInfoInterceptorLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern> -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [ %-5level] [ %logger{50} : %line ] - %msg%n</pattern>
+            <!-- 此处设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${LOG_HOME}/${appName}/userInfoInterceptor/userInfoInterceptorHandle.log</file>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${LOG_HOME}/${appName}/userInfoInterceptor/userInfoInterceptorHandleLog-%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <!-- 日志文件保留天数 -->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.peri.fashion.userInfo" level="debug" additivity="true"/>
+    <logger name="org.springframework" level="info" additivity="true"/>
+
+    <!-- 系统操作日志 -->
+    <root level="info">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="WARN"/>
+        <appender-ref ref="ERROR"/>
+    </root>
+
+    <!-- sql操作日志 -->
+    <logger name="java.sql.Connection" level="info"/>
+    <logger name="java.sql.Statement" level="info"/>
+    <logger name="java.sql.PreparedStatement" level="info"/>
+
+    <!-- 用户信息拦截器日志 -->
+    <logger name="userInfoInterceptor" level="info" additivity="false">
+        <appender-ref ref="userInfoInterceptorLogger"/>
+    </logger>
+
+</configuration>

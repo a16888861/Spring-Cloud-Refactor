@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: pf-userInfo
+  # 切换配置
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        enabled: true
+        # 分组名称
+        group: DEFAULT_GROUP
+        # 集群名称
+        cluster-name: fashion
+        instance-enabled: true
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        # 配置文件格式
+        file-extension: yaml
+        # 共享配置
+        shared-configs:
+          - ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+management:
+  endpoint:
+    # 启用shutdown端点
+    shutdown:
+      enabled: true
+    # 启用pause端点
+    pause:
+      enabled: true
+    # 启用restart端点，之所以要启用restart端点，是因为pause端点的启用依赖restart端点的启用
+    restart:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: shutdown,pause,restart,service-registry
+---
+# 开发环境
+server:
+  port: 9011
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+# sit环境
+server:
+  port: 9012
+spring:
+  config:
+    activate:
+      on-profile: sit
+---
+# uat环境
+server:
+  port: 9013
+spring:
+  config:
+    activate:
+      on-profile: uat
+---
+# 生产环境
+server:
+  port: 9014
+spring:
+  config:
+    activate:
+      on-profile: prod

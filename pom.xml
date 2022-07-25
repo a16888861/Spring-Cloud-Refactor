@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 父级默认依赖 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.7</version>
+    </parent>
+
+    <groupId>com.peri.fashion</groupId>
+    <!-- 项目名 -->
+    <artifactId>PeripheralFashion</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>TotalModule</name>
+    <description>Peripheral Fashion By Spring~</description>
+
+    <!-- 模块 -->
+    <modules>
+        <module>pf-common</module>
+        <!--业务模块-->
+        <!-- 网关 -->
+        <module>pf-gateway</module>
+        <!-- 用户 -->
+        <module>pf-userInfo</module>
+    </modules>
+    <!-- packing默认是jar类型 -->
+    <!-- 项目的打包类型：pom-父类型都为pom类型、jar-内部调用或者是作服务使用、war-需要部署的项目 -->
+    <packaging>pom</packaging>
+
+    <!-- 版本控制 -->
+    <properties>
+        <!-- 模块版本号 -->
+        <model.version>2022.1</model.version>
+        <!-- Java 版本号 -->
+        <java.version>1.8</java.version>
+        <!-- 项目编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- SpringCloud版本号 -->
+        <spring-cloud.version>2021.0.2</spring-cloud.version>
+        <!-- SpringCloudAlibaba版本号 -->
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
+        <dynamic-config.version>1.0.8</dynamic-config.version>
+        <!-- mysql连接版本号 -->
+        <mysql-connector.version>8.0.29</mysql-connector.version>
+        <!-- druid连接池版本号 -->
+        <druid.version>1.2.9</druid.version>
+        <!-- mybatis-plus版本号 -->
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <!-- mybatis版本号 -->
+        <mybatis.version>3.5.10</mybatis.version>
+        <!-- poi版本号 -->
+        <poi.version>5.2.2</poi.version>
+        <!-- json-smart -->
+        <json-smart.version>2.4.8</json-smart.version>
+        <!-- redis版本号 -->
+        <redis.version>2.6.7</redis.version>
+        <!-- fastjson版本号 -->
+        <fastjson.version>2.0.1</fastjson.version>
+        <!-- openfeign版本号 -->
+        <openfeign.version>3.1.2</openfeign.version>
+        <!-- huTool工具箱版本号 -->
+        <hutool.version>5.8.0</hutool.version>
+        <!-- lombok版本号 -->
+        <lombok.version>1.18.24</lombok.version>
+        <!-- commons-lang3版本号 -->
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <!-- OkHttp版本号 -->
+        <OkHttp.version>4.9.3</OkHttp.version>
+        <!-- swagger版本号 -->
+        <swagger.version>3.0.3</swagger.version>
+        <!-- guava版本号 -->
+        <guava.version>31.1-jre</guava.version>
+        <!-- jwt版本号 -->
+        <jwt.version>3.19.1</jwt.version>
+        <!-- sa-token版本号 -->
+        <sa-token.version>1.30.0</sa-token.version>
+        <!-- spring测试组件和插件版本号 -->
+        <plugin.buildAndTest.version>2.6.7</plugin.buildAndTest.version>
+    </properties>
+
+    <!-- 依赖管理 -->
+    <dependencyManagement>
+        <!-- 依赖关系 -->
+        <dependencies>
+            <!-- spring cloud相关 -->
+            <!--spring cloud dependencies-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud alibaba dependencies -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--
+                dynamic config 配置文件动态加载(酌情使用)
+                使用方法1: 在包含@Value成员的类上添加 @DynamicConfig。
+                使用方法2: 在有 @ConfigurationProperties 注解的类上添加 @DynamicConfig。
+                注意事项: 需要使用指定配置路径的方式启动SpringBoot应用
+                java -jar your-spring-boot-app.jar (此处两个-,由于注释方式写成这样)spring.config.location=/path/to/config
+            -->
+            <dependency>
+                <groupId>top.code2life</groupId>
+                <artifactId>spring-boot-dynamic-config</artifactId>
+                <version>${dynamic-config.version}</version>
+            </dependency>
+
+            <!-- nacos相关 -->
+            <!-- nacos注册中心 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+            </dependency>
+            <!-- nacos配置中心 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+            </dependency>
+
+            <!-- 数据库相关 -->
+            <!-- Druid驱动 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- mysql-connector-java -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mybatis</groupId>
+                        <artifactId>mybatis</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>compile</scope>
+            </dependency>
+            <!--Base实现类用-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <!-- poi -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <!-- json-smart -->
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${json-smart.version}</version>
+            </dependency>
+
+            <!-- Redis相关 -->
+            <!-- spring boot starter data redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
+            <!-- 工具相关 -->
+            <!-- FastJson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!-- spring-cloud-starter-openfeign -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${openfeign.version}</version>
+            </dependency>
+            <!-- HuTool工具箱 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!-- Lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <!-- OkHttp -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${OkHttp.version}</version>
+            </dependency>
+            <!-- swagger -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- Sa-Token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- spring cloud starter bootstrap 启动器 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

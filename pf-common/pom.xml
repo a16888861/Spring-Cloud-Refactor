@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.peri.fashion</groupId>
+        <artifactId>PeripheralFashion</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <!-- 核心模块 -->
+        <module>pf-common-core</module>
+    </modules>
+
+    <artifactId>pf-common</artifactId>
+    <packaging>pom</packaging>
+    <name>Common</name>
+    <description>common通用模块</description>
+
+</project>

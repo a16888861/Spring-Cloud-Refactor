@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: pf-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        enabled: true
+        # 分组名称
+        group: DEFAULT_GROUP
+        # 集群名称
+        cluster-name: fashion
+        instance-enabled: true
+  # 切换配置
+  profiles:
+    active: dev
+management:
+  endpoint:
+    # 启用shutdown端点
+    shutdown:
+      enabled: true
+    # 启用pause端点
+    pause:
+      enabled: true
+    # 启用restart端点，之所以要启用restart端点，是因为pause端点的启用依赖restart端点的启用
+    restart:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: shutdown,pause,restart,service-registry
+---
+# 开发环境
+server:
+  port: 9001
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+# sit环境
+server:
+  port: 9002
+spring:
+  config:
+    activate:
+      on-profile: sit
+---
+# uat环境
+server:
+  port: 9003
+spring:
+  config:
+    activate:
+      on-profile: uat
+---
+# 生产环境
+server:
+  port: 9004
+spring:
+  config:
+    activate:
+      on-profile: prod

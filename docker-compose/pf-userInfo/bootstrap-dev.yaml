@@ -1,0 +1,93 @@
+# logback
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org:
+      springframework:
+        web: debug
+  file:
+    name:
+      path: ./.logs/${spring.profiles.active}
+# mybatis-plus
+mybatis-plus:
+  # classpath*:扫描引入的模块下的mapper
+  # classpath:扫描当前模块下的mapper
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    og-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+# feign
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 20000
+        read-timeout: 20000
+spring:
+  # jackson对响应回去的日期参数进行格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  # 声明spring框架是否允许定义重名的bean对象覆盖原有的bean
+  main:
+    allow-bean-definition-overriding: true
+  # mvc接收参数时对日期进行格式化
+  mvc:
+    # 因为Springfox使用的路径匹配是基于AntPathMatcher的，而Spring Boot 2.6.X使用的是PathPatternMatcher
+    # 需要修改匹配路径swagger才可以正常运行
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  # redis配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password:
+    timeout: 5000ms
+    jedis:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1ms
+        max-active: 8
+  # 数据源配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: 123456
+      url: jdbc:mysql://127.0.0.1:3306/pf-fashion?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+      username: root
+      initial-size: 20
+      max-active: 200
+      min-idle: 8
+      max-wait: 60000
+  # 国际化文件配置
+  messages:
+    encoding: UTF-8
+    basename: i18n.message
+# knife4j(网关聚合knife4j必须禁用增强模式，否则会无法启动)
+knife4j:
+  # 屏蔽文档接口(默认false,生产环境改为true)
+  production: false
+  enable: true
+  setting:
+    enableDynamicParameter: true
+    enableOpenApi: true
+# Sa-Token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: satoken
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false
